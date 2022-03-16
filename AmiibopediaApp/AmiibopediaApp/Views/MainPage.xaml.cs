@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace AmiibopediaApp
+namespace AmiibopediaApp.Views
 {
     public partial class MainPage : ContentPage
     {
