@@ -9,16 +9,69 @@
 
     <StackLayout>
         <SearchBar Placeholder="Busca tu Amiibo" PlaceholderColor="DarkGray" ></SearchBar>
-        <ListView>
-            <ListView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Mario 1</x:String>
-                    <x:String>Mario 2</x:String>
-                    <x:String>Mario 3</x:String>
-                    <x:String>Mario 4</x:String>
-                    <x:String>Mario 5</x:String>
-                </x:Array>
-            </ListView.ItemsSource>
+        <ListView ItemsSource="{Binding Characters}">
+            <ListView.Header>
+                <Grid Margin="0,3" VerticalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Margin="5"
+                                 Padding="1"
+                                 Grid.Column="0" Background="gainsboro"
+                                 VerticalOptions="Start">
+                        <Label Text="Código"                                
+                                TextColor="#000000"
+                                FontAttributes="Bold"
+                                HorizontalTextAlignment="Center"/>
+                    </StackLayout>
+
+                    <StackLayout Margin="5"
+                                 Padding="1"
+                                 Grid.Column="1" Background="gainsboro"
+                                 VerticalOptions="Start">                        
+                        <Label Text="Nombre"
+                                TextColor="#000000"
+                                FontAttributes="Bold"/>
+                    </StackLayout>
+                </Grid>
+            </ListView.Header>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="0,3" VerticalOptions="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <StackLayout Margin="5"
+                                   Padding="1">
+                                <Label Text="{Binding key}" 
+                                       TextColor="#37474F"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"/>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="20,0"
+                                         VerticalOptions="Center"
+                                         Grid.Column="1">
+                                <StackLayout VerticalOptions="Center"
+                                             HorizontalOptions="FillAndExpand"
+                                             Spacing="1">
+                                    <Label Text="{Binding name}"
+                                            FontAttributes="Bold"/>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
     </StackLayout>
 

@@ -1,4 +1,6 @@
-﻿using AmiibopediaApp.ViewModels;
+﻿using AmiibopediaApp.ServicesContract;
+using AmiibopediaApp.ServicesImplementation;
+using AmiibopediaApp.ViewModels;
 using AmiibopediaApp.Views;
 using Prism;
 using Prism.Ioc;
@@ -41,6 +43,8 @@ namespace AmiibopediaApp
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            containerRegistry.Register<ICharactersService, CharactersService>();
         }
     }
 }
