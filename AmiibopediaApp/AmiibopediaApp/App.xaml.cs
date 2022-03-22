@@ -45,6 +45,7 @@ namespace AmiibopediaApp
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 
             containerRegistry.Register<ICharactersService, CharactersService>();
+            containerRegistry.Register<IAmiibosService, AmiibosService>();
         }
     }
 }

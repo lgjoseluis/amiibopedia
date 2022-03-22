@@ -8,7 +8,12 @@
              Title="{Binding Title}">
 
     <StackLayout>
-        <SearchBar Placeholder="Busca tu Amiibo" PlaceholderColor="DarkGray" ></SearchBar>
+        <SearchBar Placeholder="Busca tu Amiibo"
+                   PlaceholderColor="DarkGray"
+                   x:Name="searchAmiibo"                   
+                   SearchCommand="{Binding SearchAmiiboCommand}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchAmiibo}}"></SearchBar>
+        
         <ListView ItemsSource="{Binding Characters}">
             <ListView.Header>
                 <Grid Margin="0,3" VerticalOptions="Center">
@@ -21,7 +26,7 @@
                                  Padding="1"
                                  Grid.Column="0" Background="gainsboro"
                                  VerticalOptions="Start">
-                        <Label Text="Código"                                
+                        <Label Text="Code"                                
                                 TextColor="#000000"
                                 FontAttributes="Bold"
                                 HorizontalTextAlignment="Center"/>
@@ -31,7 +36,7 @@
                                  Padding="1"
                                  Grid.Column="1" Background="gainsboro"
                                  VerticalOptions="Start">                        
-                        <Label Text="Nombre"
+                        <Label Text="Character"
                                 TextColor="#000000"
                                 FontAttributes="Bold"/>
                     </StackLayout>
