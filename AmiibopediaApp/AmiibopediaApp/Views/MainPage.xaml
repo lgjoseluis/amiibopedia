@@ -1,70 +1,82 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"          
-             xmlns:prism="http://prismlibrary.com"
+             xmlns:prism="http://prismlibrary.com"             
+             xmlns:crImageEntry="clr-namespace:AmiibopediaApp.Controls.CustomRenderers"             
              prism:ViewModelLocator.AutowireViewModel="True"             
              Visual="Material"
              x:Class="AmiibopediaApp.Views.MainPage"
              Title="{Binding Title}">
 
-    <StackLayout>
-        <SearchBar Placeholder="Busca tu Amiibo"
-                   PlaceholderColor="DarkGray"
-                   x:Name="searchAmiibo"                   
-                   SearchCommand="{Binding SearchAmiiboCommand}"
-                   SearchCommandParameter="{Binding Text, Source={x:Reference searchAmiibo}}"></SearchBar>
+    <Grid BackgroundColor="SteelBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <BoxView Grid.Row="0" 
+                 BackgroundColor="White" 
+                 CornerRadius="6, 6, 6, 6"/>
         
-        <ListView ItemsSource="{Binding Characters}">
+        <SearchBar Grid.Row="0" 
+                   Placeholder="Busca tu Amiibo"                   
+                   x:Name="searchAmiibo"  
+                   Text="{Binding SearchText}" />
+
+        <BoxView Grid.Row="1"  
+                 BackgroundColor="White"
+                 CornerRadius="6, 6, 0, 0"/>
+
+        <ListView Grid.Row="1"                   
+                  ItemsSource="{Binding Characters}"
+                  SelectedItem="{Binding SelectedCharacter, Mode=TwoWay}">
             <ListView.Header>
                 <Grid Margin="0,3" VerticalOptions="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
+                    <Grid.ColumnDefinitions>                        
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="120"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <StackLayout Margin="5"
                                  Padding="1"
                                  Grid.Column="0" Background="gainsboro"
                                  VerticalOptions="Start">
+                        <Label Text="Character"
+                                TextColor="#000000"
+                                FontAttributes="Bold"/>
+                    </StackLayout>
+                    
+                    <StackLayout Margin="5"
+                                 Padding="1"
+                                 Grid.Column="1" Background="gainsboro"
+                                 VerticalOptions="Start">
                         <Label Text="Code"                                
                                 TextColor="#000000"
                                 FontAttributes="Bold"
                                 HorizontalTextAlignment="Center"/>
                     </StackLayout>
-
-                    <StackLayout Margin="5"
-                                 Padding="1"
-                                 Grid.Column="1" Background="gainsboro"
-                                 VerticalOptions="Start">                        
-                        <Label Text="Character"
-                                TextColor="#000000"
-                                FontAttributes="Bold"/>
-                    </StackLayout>
+                    
                 </Grid>
             </ListView.Header>
-            
+
+            <ListView.Behaviors>
+                <prism:EventToCommandBehavior EventName="ItemTapped"
+                                          Command="{Binding SelectedCharacterCommand}"/>
+            </ListView.Behaviors>
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <Grid Margin="0,3" VerticalOptions="Center">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
 
-                            <StackLayout Margin="5"
-                                   Padding="1">
-                                <Label Text="{Binding key}" 
-                                       TextColor="#37474F"
-                                       FontAttributes="Bold"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center"/>
-                            </StackLayout>
-                            
                             <StackLayout Orientation="Horizontal"
                                          Margin="20,0"
                                          VerticalOptions="Center"
-                                         Grid.Column="1">
+                                         Grid.Column="0">
                                 <StackLayout VerticalOptions="Center"
                                              HorizontalOptions="FillAndExpand"
                                              Spacing="1">
@@ -73,11 +85,22 @@
                                 </StackLayout>
                             </StackLayout>
 
+                            <StackLayout Margin="5"
+                                         Grid.Column="1"
+                                   Padding="1">
+                                <Label Text="{Binding key}" 
+                                       TextColor="#37474F"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"/>
+                            </StackLayout>
+
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+
+    </Grid>   
 
 </ContentPage>
