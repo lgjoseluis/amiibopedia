@@ -16,5 +16,19 @@ namespace AmiibopediaApp.Views
         {
             InitializeComponent();
         }
+
+        private async void ViewCell_Appearing(object sender, EventArgs e)
+        {
+            ViewCell cell = (ViewCell)sender;
+            View view = cell.View;
+
+            view.TranslationX = -100;
+            view.Opacity = 0;
+
+            await Task.WhenAny<bool>(
+                    view.TranslateTo(0, 0, 250, Easing.SinIn),
+                    view.FadeTo(1, 500, Easing.BounceIn)
+                );            
+        }
     }
 }

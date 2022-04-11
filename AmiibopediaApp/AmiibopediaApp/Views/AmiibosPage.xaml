@@ -5,17 +5,21 @@
              Title="{Binding Title}">
     <ContentPage.Content>
         <ListView ItemsSource="{Binding Amiibos}"
-                  RowHeight="250">
+                  RowHeight="270">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ViewCell Appearing="ViewCell_Appearing">
                         <Frame CornerRadius="5"
                                Margin="5"
                                BackgroundColor="White">
                             <StackLayout>
                                 <Image Source="{Binding image}"
                                        HeightRequest="100"/>
-                                <Label Text="{Binding name}"/>
+                                <Label Text="{Binding name}"
+                                       FontSize="Large"/>
+                                <Label Text="{Binding amiiboSeries, StringFormat='Amiibo Series: {0}'}"/>
+                                <Label Text="{Binding gameSeries, StringFormat='Game Series: {0}'}"/>
+                                <Label Text="{Binding type, StringFormat='Type: {0}'}"/>
                             </StackLayout>
                         </Frame>
                     </ViewCell>
