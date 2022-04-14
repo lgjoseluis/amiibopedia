@@ -6,6 +6,7 @@ using Prism.Services;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System;
 
 namespace AmiibopediaApp.ViewModels
 {
@@ -45,7 +46,7 @@ namespace AmiibopediaApp.ViewModels
             ICharactersService charactersService,
             IPageDialogService pageDialog) : base(navigationService)
         {
-            Title = "Amiibos";
+            Title = "Amiibopedia";
             this._charactersService = charactersService;
             this._pageDialog = pageDialog;
             this.SearchAmiiboCommand = new DelegateCommand<object>(SearchAmiibo);
@@ -66,7 +67,14 @@ namespace AmiibopediaApp.ViewModels
 
         private void LoadData()
         {
-            CharactersAll = _charactersService.GetAll();
+            try
+            {
+                CharactersAll = _charactersService.GetAll();
+            }
+            catch (Exception)
+            {                
+                _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
+            }
 
             if (CharactersAll.Any())
                 Characters = CharactersAll.OrderBy(x => x.key);
@@ -87,9 +95,10 @@ namespace AmiibopediaApp.ViewModels
 
         private void SelectedCharacterEvent()
         {
-            INavigationParameters parameters = new NavigationParameters();
-
-            parameters.Add("CharacterName", _selectedCharacter.name);
+            INavigationParameters parameters = new NavigationParameters
+            {
+                { "CharacterName", _selectedCharacter.name }
+            };
 
             NavigationService.NavigateAsync("NavigationPage/AmiibosPage", parameters);
         }

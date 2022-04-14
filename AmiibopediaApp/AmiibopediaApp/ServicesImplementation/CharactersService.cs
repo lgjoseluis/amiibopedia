@@ -1,7 +1,6 @@
-﻿using AmiibopediaApp.Helpers;
-using AmiibopediaApp.Models;
+﻿using AmiibopediaApp.Models;
 using AmiibopediaApp.ServicesContract;
-using System;
+using Refit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,9 +10,13 @@ namespace AmiibopediaApp.ServicesImplementation
     {
         public IEnumerable<Character> GetAll()
         {
-            string urlService = "https://amiiboapi.com/api/character/";
-            HttpHelper<Characters> serviceHttp = new HttpHelper<Characters>();
-            Task<Characters> taskCharacters = Task.Run(async () => await serviceHttp.GetDataFromRestServiceAsync(urlService));
+            Task<Characters> taskCharacters;
+            IRestClient apiClient = RestService.For<IRestClient>(RestClient.AmiiboBaseUrl); //Error: The SSL connection could not be established. 
+            //IRestClient apiClient = RestService.For<IRestClient>(RestClient.HttpClientAmiibo());
+
+            taskCharacters = Task.Run(
+                async () => await apiClient.GetCharacters()
+            );
 
             taskCharacters.Wait();
 

@@ -1,5 +1,6 @@
 ﻿using AmiibopediaApp.Models;
 using AmiibopediaApp.ServicesContract;
+using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
 using System;
@@ -18,12 +19,7 @@ namespace AmiibopediaApp.ViewModels
         }
 
         private string _characterName;
-        //public string CharacterName
-        //{
-        //    get => _characterName;
-        //    set => SetProperty(ref _characterName, value);
-        //}
-
+       
         private readonly IPageDialogService _pageDialog;
         private readonly IAmiibosService _amiibosService;
 
@@ -41,22 +37,21 @@ namespace AmiibopediaApp.ViewModels
 
             _characterName = parameters.GetValue<string>("CharacterName");
 
-            Title = $"Amiibos - {_characterName}";
+            Title = $"Amiibopedia - {_characterName}";
 
             LoadData();
         }
 
         private void LoadData()
         {
-
-            Amiibos = _amiibosService.GetAllByCharacter(_characterName);
-
-            //characters = Enumerable.Empty<Character>();
-
-            //if (charactersAll.Any())
-            //    characters = charactersAll.OrderBy(x => x.key);
-            //else
-            //_pageDialog.DisplayAlertAsync("Información", _characterName, "Aceptar");
+            try
+            {
+                Amiibos = _amiibosService.GetAllByCharacter(_characterName);
+            }
+            catch (Exception)
+            {
+                _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
+            }
         }
     }
 }
