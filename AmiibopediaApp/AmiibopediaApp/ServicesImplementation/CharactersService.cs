@@ -8,19 +8,15 @@ namespace AmiibopediaApp.ServicesImplementation
 {
     public class CharactersService : ICharactersService
     {
-        public IEnumerable<Character> GetAll()
-        {
-            Task<Characters> taskCharacters;
-            IRestClient apiClient = RestService.For<IRestClient>(RestClient.AmiiboBaseUrl); //Error: The SSL connection could not be established. 
-            //IRestClient apiClient = RestService.For<IRestClient>(RestClient.HttpClientAmiibo());
+        public async Task<IEnumerable<Character>> GetAll()
+        {            
+            Characters characters;
+            //IRestClient apiClient = RestService.For<IRestClient>(RestClient.AmiiboBaseUrl); //Error: The SSL connection could not be established. 
+            IRestClient apiClient = RestService.For<IRestClient>(RestClient.HttpClientAmiibo());
 
-            taskCharacters = Task.Run(
-                async () => await apiClient.GetCharacters()
-            );
+            characters = await apiClient.GetCharacters();
 
-            taskCharacters.Wait();
-
-            return taskCharacters.Result.amiibo;
+            return characters.amiibo;
         }
     }
 }

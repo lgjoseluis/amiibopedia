@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System;
+using System.Threading.Tasks;
 
 namespace AmiibopediaApp.ViewModels
 {
@@ -34,7 +35,6 @@ namespace AmiibopediaApp.ViewModels
         }
 
         public DelegateCommand SelectedCharacterCommand { get; private set; }
-        public DelegateCommand<object> SearchAmiiboCommand { get; private set; }
 
         private IEnumerable<Character> CharactersAll { get; set; }
 
@@ -49,11 +49,10 @@ namespace AmiibopediaApp.ViewModels
             Title = "Amiibopedia";
             this._charactersService = charactersService;
             this._pageDialog = pageDialog;
-            this.SearchAmiiboCommand = new DelegateCommand<object>(SearchAmiibo);
             this.SelectedCharacterCommand = new DelegateCommand(SelectedCharacterEvent);
         }
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             NavigationMode navigationMode = parameters.GetNavigationMode();
 
@@ -61,38 +60,31 @@ namespace AmiibopediaApp.ViewModels
 
             if (navigationMode == NavigationMode.New)
             {
-                LoadData();
+                await LoadData();
             }
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             try
             {
-                CharactersAll = _charactersService.GetAll();
+                CharactersAll = await _charactersService.GetAll();
             }
             catch (Exception)
             {                
-                _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
+                await _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
             }
 
-            if (CharactersAll.Any())
-                Characters = CharactersAll.OrderBy(x => x.key);
-            else
-                _pageDialog.DisplayAlertAsync("Información", "No existe información a mostrar!", "Aceptar");
+            if (CharactersAll != null && CharactersAll.Any())
+                Characters = CharactersAll.OrderBy(x => x.key);            
         }
 
         private void FindAmiibo()
         {
-            if(CharactersAll.Any())
+            if(CharactersAll != null && CharactersAll.Any())
                 RefreshItems(_searchText);            
         }
-
-        private void SearchAmiibo(object parameter)
-        {
-            RefreshItems(parameter.ToString());
-        }
-
+       
         private void SelectedCharacterEvent()
         {
             INavigationParameters parameters = new NavigationParameters
@@ -107,7 +99,6 @@ namespace AmiibopediaApp.ViewModels
         {
             if (!string.IsNullOrEmpty(character))
             {
-                //Characters = charactersAll.Where(x => x.name.StartsWith(character, System.StringComparison.InvariantCultureIgnoreCase));
                 Characters = CharactersAll.Where(x => Regex.IsMatch(x.name, character, RegexOptions.IgnoreCase));
             }
             else

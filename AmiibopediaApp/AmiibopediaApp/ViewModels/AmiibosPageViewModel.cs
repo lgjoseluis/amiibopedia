@@ -6,6 +6,7 @@ using Prism.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AmiibopediaApp.ViewModels
 {
@@ -31,7 +32,7 @@ namespace AmiibopediaApp.ViewModels
             _amiibosService = amiibosService;
         }
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
 
@@ -39,18 +40,18 @@ namespace AmiibopediaApp.ViewModels
 
             Title = $"Amiibopedia - {_characterName}";
 
-            LoadData();
+            await LoadData();
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             try
             {
-                Amiibos = _amiibosService.GetAllByCharacter(_characterName);
+                Amiibos = await _amiibosService.GetAllByCharacter(_characterName);
             }
             catch (Exception)
             {
-                _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
+                await _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
             }
         }
     }

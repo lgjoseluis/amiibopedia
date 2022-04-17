@@ -9,7 +9,7 @@ namespace AmiibopediaApp.ServicesContract
 {
     public interface IRestClient
     {
-        [Get("/character")]
+        [Get("/character/")]
         Task<Characters> GetCharacters();
 
         [Get("/amiibo/?character={character}")]

@@ -1,12 +1,12 @@
-﻿using AmiibopediaApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using AmiibopediaApp.Models;
 
 namespace AmiibopediaApp.ServicesContract
 {
     public interface ICharactersService
     {
-        IEnumerable<Character> GetAll();
+        Task<IEnumerable<Character>> GetAll();
     }
 }

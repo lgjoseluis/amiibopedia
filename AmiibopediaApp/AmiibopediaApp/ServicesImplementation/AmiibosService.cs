@@ -8,18 +8,14 @@ namespace AmiibopediaApp.ServicesImplementation
 {
     public class AmiibosService : IAmiibosService
     {
-        public IEnumerable<Amiibo> GetAllByCharacter(string character)
+        public async Task<IEnumerable<Amiibo>> GetAllByCharacter(string character)
         {
-            Task<Amiibos> taskCharacters;            
+            Amiibos amiibos;            
             IRestClient apiClient = RestService.For<IRestClient>(RestClient.HttpClientAmiibo());
                         
-            taskCharacters = Task.Run(
-                async () => await apiClient.GetAmiibos(character)
-            );
+            amiibos = await apiClient.GetAmiibos(character);
 
-            taskCharacters.Wait();
-
-            return taskCharacters.Result.amiibo;
+            return amiibos.amiibo;
         }
     }
 }
