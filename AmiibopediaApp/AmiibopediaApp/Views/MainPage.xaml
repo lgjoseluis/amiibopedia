@@ -8,99 +8,114 @@
              x:Class="AmiibopediaApp.Views.MainPage"
              Title="{Binding Title}">
 
-    <Grid BackgroundColor="SteelBlue">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <BoxView Grid.Row="0" 
-                 BackgroundColor="White" 
-                 CornerRadius="6, 6, 6, 6"/>
+    <Grid>        
         
-        <SearchBar Grid.Row="0" 
-                   Placeholder="Busca tu Amiibo"                   
-                   x:Name="searchAmiibo"  
-                   Text="{Binding SearchText}" />
+        <StackLayout>
+            <Grid BackgroundColor="SteelBlue">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <BoxView Grid.Row="1"  
-                 BackgroundColor="White"
-                 CornerRadius="6, 6, 0, 0"/>
+                <BoxView Grid.Row="0" 
+                     BackgroundColor="White" 
+                     CornerRadius="6, 6, 6, 6"/>
 
-        <ListView Grid.Row="1"                   
-                  ItemsSource="{Binding Characters}"
-                  SelectedItem="{Binding SelectedCharacter, Mode=TwoWay}">
-            <ListView.Header>
-                <Grid Margin="0,3" VerticalOptions="Center">
-                    <Grid.ColumnDefinitions>                        
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="120"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                <SearchBar Grid.Row="0" 
+                       Placeholder="Busca tu Amiibo"                   
+                       x:Name="searchAmiibo"
+                       Text="{Binding SearchText}" />
 
-                    <StackLayout Margin="5"
-                                 Padding="1"
-                                 Grid.Column="0" Background="gainsboro"
-                                 VerticalOptions="Start">
-                        <Label Text="Character"
-                                TextColor="#000000"
-                                FontAttributes="Bold"/>
-                    </StackLayout>
-                    
-                    <StackLayout Margin="5"
-                                 Padding="1"
-                                 Grid.Column="1" Background="gainsboro"
-                                 VerticalOptions="Start">
-                        <Label Text="Code"                                
-                                TextColor="#000000"
-                                FontAttributes="Bold"
-                                HorizontalTextAlignment="Center"/>
-                    </StackLayout>
-                    
-                </Grid>
-            </ListView.Header>
+                <BoxView Grid.Row="1"  
+                     BackgroundColor="White"
+                     CornerRadius="6, 6, 0, 0"/>
 
-            <ListView.Behaviors>
-                <prism:EventToCommandBehavior EventName="ItemTapped"
-                                          Command="{Binding SelectedCharacterCommand}"/>
-            </ListView.Behaviors>
-
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
+                <ListView Grid.Row="1"      
+                          SelectionMode="Single"
+                      ItemsSource="{Binding Characters}"
+                      SelectedItem="{Binding SelectedCharacter, Mode=TwoWay}">
+                    <ListView.Header>
                         <Grid Margin="0,3" VerticalOptions="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="120"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
 
-                            <StackLayout Orientation="Horizontal"
-                                         Margin="20,0"
-                                         VerticalOptions="Center"
-                                         Grid.Column="0">
-                                <StackLayout VerticalOptions="Center"
-                                             HorizontalOptions="FillAndExpand"
-                                             Spacing="1">
-                                    <Label Text="{Binding name}"
-                                            FontAttributes="Bold"/>
-                                </StackLayout>
+                            <StackLayout Margin="5"
+                                     Padding="1"
+                                     Grid.Column="0" Background="gainsboro"
+                                     VerticalOptions="Start">
+                                <Label Text="Character"
+                                    TextColor="#000000"
+                                    FontAttributes="Bold"/>
                             </StackLayout>
 
                             <StackLayout Margin="5"
-                                         Grid.Column="1"
-                                   Padding="1">
-                                <Label Text="{Binding key}" 
-                                       TextColor="#37474F"
-                                       FontAttributes="Bold"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center"/>
+                                     Padding="1"
+                                     Grid.Column="1" Background="gainsboro"
+                                     VerticalOptions="Start">
+                                <Label Text="Code"                                
+                                    TextColor="#000000"
+                                    FontAttributes="Bold"
+                                    HorizontalTextAlignment="Center"/>
                             </StackLayout>
 
                         </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    </ListView.Header>
 
-    </Grid>   
+                    <ListView.Behaviors>
+                        <prism:EventToCommandBehavior EventName="ItemTapped"
+                                              Command="{Binding SelectedCharacterCommand}"/>
+                    </ListView.Behaviors>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Margin="0,3" VerticalOptions="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="120"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackLayout Orientation="Horizontal"
+                                             Margin="20,0"
+                                             VerticalOptions="Center"
+                                             Grid.Column="0">
+                                        <StackLayout VerticalOptions="Center"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 Spacing="1">
+                                            <Label Text="{Binding name}"
+                                                FontAttributes="Bold"/>
+                                        </StackLayout>
+                                    </StackLayout>
+
+                                    <StackLayout Margin="5"
+                                             Grid.Column="1"
+                                       Padding="1">
+                                        <Label Text="{Binding key}" 
+                                           TextColor="#37474F"
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center"/>
+                                    </StackLayout>
+
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Grid>
+        </StackLayout>
+
+        <Grid Opacity="0.8"
+              BackgroundColor="Black"
+              IsVisible="{Binding IsBusy}">
+            <ActivityIndicator HorizontalOptions="Center"
+                               IsRunning="{Binding IsBusy}"/>
+
+        </Grid>
+        
+    </Grid>
 
 </ContentPage>

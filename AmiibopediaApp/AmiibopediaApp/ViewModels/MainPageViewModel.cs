@@ -49,7 +49,8 @@ namespace AmiibopediaApp.ViewModels
             Title = "Amiibopedia";
             this._charactersService = charactersService;
             this._pageDialog = pageDialog;
-            this.SelectedCharacterCommand = new DelegateCommand(SelectedCharacterEvent);
+            
+            this.SelectedCharacterCommand = new DelegateCommand(async() => await SelectedCharacterEvent()).ObservesCanExecute( ( ) => CanNavigate );
         }
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
@@ -59,13 +60,15 @@ namespace AmiibopediaApp.ViewModels
             base.OnNavigatedTo(parameters);
 
             if (navigationMode == NavigationMode.New)
-            {
-                await LoadData();
+            {                
+                await LoadData();                
             }
         }
 
         private async Task LoadData()
         {
+            IsBusy = true;
+
             try
             {
                 CharactersAll = await _charactersService.GetAll();
@@ -76,7 +79,9 @@ namespace AmiibopediaApp.ViewModels
             }
 
             if (CharactersAll != null && CharactersAll.Any())
-                Characters = CharactersAll.OrderBy(x => x.key);            
+                Characters = CharactersAll.OrderBy(x => x.key);
+
+            IsBusy = false;
         }
 
         private void FindAmiibo()
@@ -85,14 +90,17 @@ namespace AmiibopediaApp.ViewModels
                 RefreshItems(_searchText);            
         }
        
-        private void SelectedCharacterEvent()
+        private async Task SelectedCharacterEvent()
         {
+            CanNavigate = false;
             INavigationParameters parameters = new NavigationParameters
             {
                 { "CharacterName", _selectedCharacter.name }
             };
 
-            NavigationService.NavigateAsync("NavigationPage/AmiibosPage", parameters);
+            await NavigationService.NavigateAsync("NavigationPage/AmiibosPage", parameters);
+
+            CanNavigate = true;
         }
 
         private void RefreshItems(string character)

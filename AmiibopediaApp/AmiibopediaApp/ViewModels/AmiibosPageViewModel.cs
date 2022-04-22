@@ -39,12 +39,14 @@ namespace AmiibopediaApp.ViewModels
             _characterName = parameters.GetValue<string>("CharacterName");
 
             Title = $"Amiibopedia - {_characterName}";
-
-            await LoadData();
+                        
+            await LoadData();            
         }
 
         private async Task LoadData()
         {
+            IsBusy = true;
+
             try
             {
                 Amiibos = await _amiibosService.GetAllByCharacter(_characterName);
@@ -53,6 +55,10 @@ namespace AmiibopediaApp.ViewModels
             {
                 await _pageDialog.DisplayAlertAsync("Error", "Error al consultar el servicio!", "Aceptar");
             }
+            finally
+            {
+                IsBusy = false;
+            }            
         }
     }
 }
